@@ -43,3 +43,17 @@ func TestReadRunes(t *testing.T) {
 	runes := reader.ReadRunes(2022, 1)
 	assert.Equal(t, []string{"h", "e", "l", "l", "o", "\n", "w", "o", "r", "l", "d"}, runes)
 }
+
+func TestReadChunks(t *testing.T) {
+	fs := fstest.MapFS{
+		"2022/day01/input.txt": {
+			Data: []byte("hello world\nhello universe\n\nhello everything"),
+		},
+	}
+
+	reader := &inputreader.InputReader{fs}
+	chunks := reader.ReadChunks(2022, 1)
+	assert.Len(t, chunks, 2)
+	assert.Equal(t, []string{"hello world", "hello universe"}, chunks[0])
+	assert.Equal(t, []string{"hello everything"}, chunks[1])
+}

@@ -30,6 +30,25 @@ func (reader *InputReader) ReadRunes(year, day int) []string {
 	return read(reader.FS, getFilename(year, day), bufio.ScanRunes)
 }
 
+func (reader *InputReader) ReadChunks(year, day int) [][]string {
+	lines := reader.ReadLines(year, day)
+	chunk := []string{}
+	chunks := [][]string{}
+
+	for _, line := range lines {
+		if len(line) == 0 {
+			chunks = append(chunks, chunk)
+			chunk = []string{}
+		} else {
+			chunk = append(chunk, line)
+		}
+	}
+
+	chunks = append(chunks, chunk)
+	return chunks
+
+}
+
 func getFilename(year, day int) string {
 	return fmt.Sprintf(filenameTemplate, year, day)
 }
