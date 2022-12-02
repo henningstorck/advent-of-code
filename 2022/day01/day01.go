@@ -23,12 +23,12 @@ func Parse(chunks [][]string) []int {
 	})
 }
 
-func SolvePart1(inventory []int) int {
-	sort.Sort(sort.Reverse(sort.IntSlice(inventory)))
-	return inventory[0]
+func SolvePart1(inventories []int) int {
+	sort.Sort(sort.Reverse(sort.IntSlice(inventories)))
+	return inventories[0]
 }
 
-func SolvePart2(inventory []int) int {
-	sort.Sort(sort.Reverse(sort.IntSlice(inventory)))
-	return inventory[0] + inventory[1] + inventory[2]
+func SolvePart2(inventories []int) int {
+	sort.Sort(sort.Reverse(sort.IntSlice(inventories)))
+	return inventories[0] + inventories[1] + inventories[2]
 }
