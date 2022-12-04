@@ -9,7 +9,7 @@ import (
 )
 
 func TestSolveParts(t *testing.T) {
-	input := []string{
+	lines := []string{
 		"vJrwpWtwJgWrhcsFMMfFFhFp",
 		"jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL",
 		"PmmdzqPrVvPwwTWBwg",
@@ -18,8 +18,8 @@ func TestSolveParts(t *testing.T) {
 		"CrZsJsPPZsGzwwsLwLmpwMDw",
 	}
 
-	resultPart1 := day03.SolvePart1(input)
-	resultPart2 := day03.SolvePart2(input)
+	resultPart1 := day03.SolvePart1(lines)
+	resultPart2 := day03.SolvePart2(lines)
 	assert.Equal(t, 157, resultPart1)
 	assert.Equal(t, 70, resultPart2)
 }

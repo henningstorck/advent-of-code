@@ -9,7 +9,7 @@ import (
 )
 
 func TestSolveParts(t *testing.T) {
-	input := []string{
+	lines := []string{
 		"2-4,6-8",
 		"2-3,4-5",
 		"5-7,7-9",
@@ -18,7 +18,7 @@ func TestSolveParts(t *testing.T) {
 		"2-6,4-8",
 	}
 
-	pairs := day04.Parse(input)
+	pairs := day04.Parse(lines)
 	resultPart1 := day04.SolvePart1(pairs)
 	resultPart2 := day04.SolvePart2(pairs)
 	assert.Equal(t, 2, resultPart1)

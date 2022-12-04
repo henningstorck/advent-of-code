@@ -9,14 +9,14 @@ import (
 )
 
 func TestSolveParts(t *testing.T) {
-	input := []string{
+	lines := []string{
 		"A Y",
 		"B X",
 		"C Z",
 	}
 
-	resultPart1 := day02.SolvePart1(input)
-	resultPart2 := day02.SolvePart2(input)
+	resultPart1 := day02.SolvePart1(lines)
+	resultPart2 := day02.SolvePart2(lines)
 	assert.Equal(t, 15, resultPart1)
 	assert.Equal(t, 12, resultPart2)
 }

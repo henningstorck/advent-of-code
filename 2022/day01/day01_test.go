@@ -9,7 +9,7 @@ import (
 )
 
 func TestSolveParts(t *testing.T) {
-	input := [][]string{
+	chunks := [][]string{
 		{
 			"1000",
 			"2000",
@@ -32,7 +32,7 @@ func TestSolveParts(t *testing.T) {
 		},
 	}
 
-	inventories := day01.Parse(input)
+	inventories := day01.Parse(chunks)
 	resultPart1 := day01.SolvePart1(inventories)
 	resultPart2 := day01.SolvePart2(inventories)
 	assert.Equal(t, 24000, resultPart1)
