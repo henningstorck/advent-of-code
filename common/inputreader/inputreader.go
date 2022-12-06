@@ -6,6 +6,8 @@ import (
 	"io/fs"
 	"log"
 	"os"
+
+	"github.com/henningstorck/advent-of-code/common/functional"
 )
 
 const filenameTemplate = "%d/day%02d/input.txt"
@@ -26,8 +28,12 @@ func (reader *InputReader) ReadWords(year, day int) []string {
 	return read(reader.FS, getFilename(year, day), bufio.ScanWords)
 }
 
-func (reader *InputReader) ReadRunes(year, day int) []string {
-	return read(reader.FS, getFilename(year, day), bufio.ScanRunes)
+func (reader *InputReader) ReadRunes(year, day int) []rune {
+	chars := read(reader.FS, getFilename(year, day), bufio.ScanRunes)
+
+	return functional.Map(chars, func(char string) rune {
+		return rune(char[0])
+	})
 }
 
 func (reader *InputReader) ReadChunks(year, day int) [][]string {

@@ -41,7 +41,7 @@ func TestReadRunes(t *testing.T) {
 
 	reader := &inputreader.InputReader{fs}
 	runes := reader.ReadRunes(2022, 1)
-	assert.Equal(t, []string{"h", "e", "l", "l", "o", "\n", "w", "o", "r", "l", "d"}, runes)
+	assert.Equal(t, []rune{'h', 'e', 'l', 'l', 'o', '\n', 'w', 'o', 'r', 'l', 'd'}, runes)
 }
 
 func TestReadChunks(t *testing.T) {
