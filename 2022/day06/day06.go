@@ -17,15 +17,15 @@ func SolvePart2(runes []rune) int {
 	return findStartPos(runes, 14)
 }
 
-func findStartPos(runes []rune, distictRunes int) int {
-	for i := distictRunes; i < len(runes); i++ {
+func findStartPos(runes []rune, distinctRunes int) int {
+	for i := distinctRunes; i < len(runes); i++ {
 		set := make(map[rune]bool)
 
-		for j := 0; j < distictRunes; j++ {
-			set[runes[i+j-distictRunes]] = true
+		for j := 0; j < distinctRunes; j++ {
+			set[runes[i+j-distinctRunes]] = true
 		}
 
-		if len(set) == distictRunes {
+		if len(set) == distinctRunes {
 			return i
 		}
 	}
