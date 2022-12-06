@@ -18,9 +18,19 @@ func (stack *Stack) Pop() (string, bool) {
 	if stack.IsEmpty() {
 		return "", false
 	} else {
-		index := len(*stack) - 1
-		value := (*stack)[index]
-		*stack = (*stack)[:index]
+		i := len(*stack) - 1
+		value := (*stack)[i]
+		*stack = (*stack)[:i]
+		return value, true
+	}
+}
+
+func (stack *Stack) Peek() (string, bool) {
+	if stack.IsEmpty() {
+		return "", false
+	} else {
+		i := len(*stack) - 1
+		value := (*stack)[i]
 		return value, true
 	}
 }

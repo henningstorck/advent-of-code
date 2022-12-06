@@ -68,6 +68,7 @@ func SolvePart1(stacks []*stack.Stack, instructions []Instruction) string {
 	for _, instruction := range instructions {
 		from := instruction.From - 1
 		to := instruction.To - 1
+
 		for i := 0; i < instruction.Amount; i++ {
 			value, _ := stacksCopy[from].Pop()
 			stacksCopy[to].Push(value)
@@ -104,7 +105,7 @@ func stacksToStrings(stacks []*stack.Stack) string {
 	var buffer bytes.Buffer
 
 	for _, stack := range stacks {
-		value, _ := stack.Pop()
+		value, _ := stack.Peek()
 		buffer.WriteString(value)
 	}
 
