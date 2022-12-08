@@ -16,10 +16,10 @@ func SolvePart1(lines []string) int {
 
 	for y := 0; y < len(lines); y++ {
 		for x := 0; x < len(lines[0]); x++ {
-			coveredToNorth, _ := isCoveredToNorth(lines, x, y)
-			coveredToEast, _ := isCoveredToEast(lines, x, y)
-			coveredToSouth, _ := isCoveredToSouth(lines, x, y)
-			coveredToWest, _ := isCoveredToWest(lines, x, y)
+			coveredToNorth, _ := getNorthCoverage(lines, x, y)
+			coveredToEast, _ := getEastCoverage(lines, x, y)
+			coveredToSouth, _ := getSouthCoverage(lines, x, y)
+			coveredToWest, _ := getWestCoverage(lines, x, y)
 
 			if !coveredToNorth || !coveredToEast || !coveredToSouth || !coveredToWest {
 				treesInSight++
@@ -35,10 +35,10 @@ func SolvePart2(lines []string) int {
 
 	for y := 0; y < len(lines); y++ {
 		for x := 0; x < len(lines[0]); x++ {
-			_, treesToNorth := isCoveredToNorth(lines, x, y)
-			_, treesToEast := isCoveredToEast(lines, x, y)
-			_, treesToSouth := isCoveredToSouth(lines, x, y)
-			_, treesToWest := isCoveredToWest(lines, x, y)
+			_, treesToNorth := getNorthCoverage(lines, x, y)
+			_, treesToEast := getEastCoverage(lines, x, y)
+			_, treesToSouth := getSouthCoverage(lines, x, y)
+			_, treesToWest := getWestCoverage(lines, x, y)
 			scenicScore := treesToNorth * treesToEast * treesToSouth * treesToWest
 
 			if scenicScore > bestScenicScore {
@@ -50,23 +50,23 @@ func SolvePart2(lines []string) int {
 	return bestScenicScore
 }
 
-func isCoveredToNorth(lines []string, x, y int) (bool, int) {
-	return isCovered(lines, x, y, 0, -1)
+func getNorthCoverage(lines []string, x, y int) (bool, int) {
+	return getCoverage(lines, x, y, 0, -1)
 }
 
-func isCoveredToEast(lines []string, x, y int) (bool, int) {
-	return isCovered(lines, x, y, 1, 0)
+func getEastCoverage(lines []string, x, y int) (bool, int) {
+	return getCoverage(lines, x, y, 1, 0)
 }
 
-func isCoveredToSouth(lines []string, x, y int) (bool, int) {
-	return isCovered(lines, x, y, 0, 1)
+func getSouthCoverage(lines []string, x, y int) (bool, int) {
+	return getCoverage(lines, x, y, 0, 1)
 }
 
-func isCoveredToWest(lines []string, x, y int) (bool, int) {
-	return isCovered(lines, x, y, -1, 0)
+func getWestCoverage(lines []string, x, y int) (bool, int) {
+	return getCoverage(lines, x, y, -1, 0)
 }
 
-func isCovered(lines []string, x, y, xMod, yMod int) (bool, int) {
+func getCoverage(lines []string, x, y, xMod, yMod int) (bool, int) {
 	tree := getTreeAt(lines, x, y)
 	treesInSight := 0
 	x += xMod
