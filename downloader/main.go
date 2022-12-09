@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
 	"io"
@@ -19,9 +20,10 @@ const (
 )
 
 type Flags struct {
-	Day     int
-	Year    int
-	Session string
+	Day       int
+	Year      int
+	Session   string
+	Bootstrap bool
 }
 
 func main() {
@@ -44,6 +46,14 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
+
+	if flags.Bootstrap {
+		err = bootstrap(flags.Day, flags.Year)
+
+		if err != nil {
+			log.Fatalln(err)
+		}
+	}
 }
 
 func getFlags() Flags {
@@ -58,6 +68,7 @@ func getFlags() Flags {
 	flag.IntVar(&flags.Day, "day", curDay, "Day to download")
 	flag.IntVar(&flags.Year, "year", curYear, "Year to download")
 	flag.StringVar(&flags.Session, "session", defaultSession, "AoC session")
+	flag.BoolVar(&flags.Bootstrap, "bootstrap", true, "Bootstrap source files")
 	flag.Parse()
 	return flags
 }
@@ -99,6 +110,42 @@ func writeFile(filename string, body io.Reader) error {
 
 	defer out.Close()
 	_, err = io.Copy(out, body)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func bootstrap(day, year int) error {
+	err := copyTemplate(day, year, "downloader/dayxx/dayxx.go", fmt.Sprintf("%d/day%02d/day%02d.go", year, day, day))
+
+	if err != nil {
+		return err
+	}
+
+	err = copyTemplate(day, year, "downloader/dayxx/dayxx_test.go", fmt.Sprintf("%d/day%02d/day%02d_test.go", year, day, day))
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func copyTemplate(day, year int, src, dest string) error {
+	contents, err := os.ReadFile(src)
+
+	if err != nil {
+		return err
+	}
+
+	contents = bytes.Replace(contents, []byte("downloader/dayxx"), []byte(fmt.Sprintf("%d/day%02d", year, day)), -1)
+	contents = bytes.Replace(contents, []byte("dayxx"), []byte(fmt.Sprintf("day%02d", day)), -1)
+	contents = bytes.Replace(contents, []byte("reader.ReadLines(0, 0)"), []byte(fmt.Sprintf("reader.ReadLines(%d, %d)", year, day)), -1)
+	contents = bytes.Replace(contents, []byte("\tt.Skip()\n"), []byte(""), -1)
+	err = os.WriteFile(dest, contents, 0644)
 
 	if err != nil {
 		return err
