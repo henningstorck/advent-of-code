@@ -43,16 +43,16 @@ var lookupTable2 = map[string]int{
 	scissor1 + " " + win:  1 + 6,
 }
 
-func Solve(reader *inputreader.InputReader) (int, int) {
-	rounds := reader.ReadLines(2022, 2)
-	return SolvePart1(rounds), SolvePart2(rounds)
+func Solve(reader *inputreader.InputReader, filename string) (int, int) {
+	rounds := reader.ReadLines(2022, 2, filename)
+	return solvePart1(rounds), solvePart2(rounds)
 }
 
-func SolvePart1(rounds []string) int {
+func solvePart1(rounds []string) int {
 	return getPoints(rounds, lookupTable1)
 }
 
-func SolvePart2(rounds []string) int {
+func solvePart2(rounds []string) int {
 	return getPoints(rounds, lookupTable2)
 }
 

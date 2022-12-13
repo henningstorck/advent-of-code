@@ -20,13 +20,13 @@ type Monkey struct {
 	Inspections int
 }
 
-func Solve(reader *inputreader.InputReader) (int, int) {
-	chunks := reader.ReadChunks(2022, 11)
-	monkeys := Parse(chunks)
-	return SolvePart1(monkeys), SolvePart2(monkeys)
+func Solve(reader *inputreader.InputReader, filename string) (int, int) {
+	chunks := reader.ReadChunks(2022, 11, filename)
+	monkeys := parse(chunks)
+	return solvePart1(monkeys), solvePart2(monkeys)
 }
 
-func Parse(chunks [][]string) []*Monkey {
+func parse(chunks [][]string) []*Monkey {
 	return functional.Map(chunks, func(lines []string) *Monkey {
 		monkey := &Monkey{}
 
@@ -63,7 +63,7 @@ func Parse(chunks [][]string) []*Monkey {
 	})
 }
 
-func SolvePart1(monkeys []*Monkey) int {
+func solvePart1(monkeys []*Monkey) int {
 	var monkeysCopy []*Monkey
 	copier.CopyWithOption(&monkeysCopy, &monkeys, copier.Option{DeepCopy: true})
 
@@ -72,7 +72,7 @@ func SolvePart1(monkeys []*Monkey) int {
 	})
 }
 
-func SolvePart2(monkeys []*Monkey) int {
+func solvePart2(monkeys []*Monkey) int {
 	var monkeysCopy []*Monkey
 	copier.CopyWithOption(&monkeysCopy, &monkeys, copier.Option{DeepCopy: true})
 	superModulo := getSuperModulo(monkeysCopy)

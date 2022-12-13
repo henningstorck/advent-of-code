@@ -9,7 +9,7 @@ import (
 
 func main() {
 	reader := inputreader.NewInputReader(".")
-	resultPart1, resultPart2 := day11.Solve(reader)
-	log.Printf("Part 1: %v\n", resultPart1)
-	log.Printf("Part 2: %v\n", resultPart2)
+	result1, result2 := day11.Solve(reader, "input.txt")
+	log.Printf("Part 1: %v\n", result1)
+	log.Printf("Part 2: %v\n", result2)
 }

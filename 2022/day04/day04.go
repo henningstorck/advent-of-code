@@ -13,13 +13,13 @@ type Assignment struct {
 	To   int
 }
 
-func Solve(reader *inputreader.InputReader) (int, int) {
-	lines := reader.ReadLines(2022, 4)
-	pairs := Parse(lines)
-	return SolvePart1(pairs), SolvePart2(pairs)
+func Solve(reader *inputreader.InputReader, filename string) (int, int) {
+	lines := reader.ReadLines(2022, 4, filename)
+	pairs := parse(lines)
+	return solvePart1(pairs), solvePart2(pairs)
 }
 
-func Parse(lines []string) [][]Assignment {
+func parse(lines []string) [][]Assignment {
 	return functional.Map(lines, func(line string) []Assignment {
 		return functional.Map(strings.Split(line, ","), func(assignmentStr string) Assignment {
 			assignmentSlice := strings.Split(assignmentStr, "-")
@@ -30,7 +30,7 @@ func Parse(lines []string) [][]Assignment {
 	})
 }
 
-func SolvePart1(pairs [][]Assignment) int {
+func solvePart1(pairs [][]Assignment) int {
 	return functional.Reduce(pairs, func(sum int, assigmnents []Assignment) int {
 		if isFullyContained(assigmnents[0], assigmnents[1]) {
 			return sum + 1
@@ -40,7 +40,7 @@ func SolvePart1(pairs [][]Assignment) int {
 	}, 0)
 }
 
-func SolvePart2(pairs [][]Assignment) int {
+func solvePart2(pairs [][]Assignment) int {
 	return functional.Reduce(pairs, func(sum int, assigmnents []Assignment) int {
 		if isPartiallyContained(assigmnents[0], assigmnents[1]) {
 			return sum + 1

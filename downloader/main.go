@@ -131,6 +131,12 @@ func bootstrap(day, year int) error {
 		return err
 	}
 
+	err = copyTemplate(day, year, "downloader/dayxx/example.txt", fmt.Sprintf("%d/day%02d/example.txt", year, day))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -143,8 +149,8 @@ func copyTemplate(day, year int, src, dest string) error {
 
 	contents = bytes.Replace(contents, []byte("downloader/dayxx"), []byte(fmt.Sprintf("%d/day%02d", year, day)), -1)
 	contents = bytes.Replace(contents, []byte("dayxx"), []byte(fmt.Sprintf("day%02d", day)), -1)
-	contents = bytes.Replace(contents, []byte("reader.ReadLines(0, 0)"), []byte(fmt.Sprintf("reader.ReadLines(%d, %d)", year, day)), -1)
-	contents = bytes.Replace(contents, []byte("\tt.Skip()\n"), []byte(""), -1)
+	contents = bytes.Replace(contents, []byte("reader.ReadLines(0, 0, filename)"), []byte(fmt.Sprintf("reader.ReadLines(%d, %d, filename)", year, day)), -1)
+	contents = bytes.Replace(contents, []byte("\tt.Skip()\n\n"), []byte(""), -1)
 	err = os.WriteFile(dest, contents, 0644)
 
 	if err != nil {

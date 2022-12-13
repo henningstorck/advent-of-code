@@ -7,12 +7,12 @@ import (
 	"github.com/henningstorck/advent-of-code/common/inputreader"
 )
 
-func Solve(reader *inputreader.InputReader) (int, string) {
-	lines := reader.ReadLines(2022, 10)
-	return SolvePart1(lines), SolvePart2(lines)
+func Solve(reader *inputreader.InputReader, filename string) (int, string) {
+	lines := reader.ReadLines(2022, 10, filename)
+	return solvePart1(lines), solvePart2(lines)
 }
 
-func SolvePart1(lines []string) int {
+func solvePart1(lines []string) int {
 	x := 1
 	cycle := 1
 	result := 0
@@ -31,7 +31,7 @@ func SolvePart1(lines []string) int {
 	return result
 }
 
-func SolvePart2(lines []string) string {
+func solvePart2(lines []string) string {
 	x := 1
 	cycle := 1
 	result := ""

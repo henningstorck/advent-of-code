@@ -8,24 +8,20 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSolveParts(t *testing.T) {
-	lines := []string{
-		"Sabqponm",
-		"abcryxxl",
-		"accszExk",
-		"acctuvwj",
-		"abdefghi",
+func TestSolve(t *testing.T) {
+	tests := []struct {
+		filename  string
+		expected1 int
+		expected2 int
+	}{
+		{"example.txt", 31, 29},
+		{"input.txt", 447, 446},
 	}
 
-	resultPart1 := day12.SolvePart1(lines)
-	resultPart2 := day12.SolvePart2(lines)
-	assert.Equal(t, 31, resultPart1)
-	assert.Equal(t, 29, resultPart2)
-}
-
-func TestSolveRealInput(t *testing.T) {
-	reader := inputreader.NewInputReader("../..")
-	resultPart1, resultPart2 := day12.Solve(reader)
-	assert.Equal(t, 447, resultPart1)
-	assert.Equal(t, 446, resultPart2)
+	for _, test := range tests {
+		reader := inputreader.NewInputReader("../..")
+		result1, result2 := day12.Solve(reader, test.filename)
+		assert.Equal(t, test.expected1, result1)
+		assert.Equal(t, test.expected2, result2)
+	}
 }

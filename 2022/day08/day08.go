@@ -6,12 +6,12 @@ import (
 	"github.com/henningstorck/advent-of-code/common/inputreader"
 )
 
-func Solve(reader *inputreader.InputReader) (int, int) {
-	lines := reader.ReadLines(2022, 8)
-	return SolvePart1(lines), SolvePart2(lines)
+func Solve(reader *inputreader.InputReader, filename string) (int, int) {
+	lines := reader.ReadLines(2022, 8, filename)
+	return solvePart1(lines), solvePart2(lines)
 }
 
-func SolvePart1(lines []string) int {
+func solvePart1(lines []string) int {
 	treesInSight := 0
 
 	for y := 0; y < len(lines); y++ {
@@ -30,7 +30,7 @@ func SolvePart1(lines []string) int {
 	return treesInSight
 }
 
-func SolvePart2(lines []string) int {
+func solvePart2(lines []string) int {
 	bestScenicScore := 0
 
 	for y := 0; y < len(lines); y++ {

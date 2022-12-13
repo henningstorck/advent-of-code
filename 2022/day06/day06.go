@@ -4,16 +4,16 @@ import (
 	"github.com/henningstorck/advent-of-code/common/inputreader"
 )
 
-func Solve(reader *inputreader.InputReader) (int, int) {
-	runes := reader.ReadRunes(2022, 6)
-	return SolvePart1(runes), SolvePart2(runes)
+func Solve(reader *inputreader.InputReader, filename string) (int, int) {
+	runes := reader.ReadRunes(2022, 6, filename)
+	return solvePart1(runes), solvePart2(runes)
 }
 
-func SolvePart1(runes []rune) int {
+func solvePart1(runes []rune) int {
 	return findStartPos(runes, 4)
 }
 
-func SolvePart2(runes []rune) int {
+func solvePart2(runes []rune) int {
 	return findStartPos(runes, 14)
 }
 

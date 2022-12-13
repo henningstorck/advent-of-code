@@ -16,7 +16,7 @@ func TestReadLines(t *testing.T) {
 	}
 
 	reader := &inputreader.InputReader{fs}
-	lines := reader.ReadLines(2022, 1)
+	lines := reader.ReadLines(2022, 1, "input.txt")
 	assert.Equal(t, []string{"hello world", "hello universe", "", "hello everything"}, lines)
 }
 
@@ -28,7 +28,7 @@ func TestReadWords(t *testing.T) {
 	}
 
 	reader := &inputreader.InputReader{fs}
-	words := reader.ReadWords(2022, 1)
+	words := reader.ReadWords(2022, 1, "input.txt")
 	assert.Equal(t, []string{"hello", "world", "hello", "universe", "hello", "everything"}, words)
 }
 
@@ -40,7 +40,7 @@ func TestReadRunes(t *testing.T) {
 	}
 
 	reader := &inputreader.InputReader{fs}
-	runes := reader.ReadRunes(2022, 1)
+	runes := reader.ReadRunes(2022, 1, "input.txt")
 	assert.Equal(t, []rune{'h', 'e', 'l', 'l', 'o', '\n', 'w', 'o', 'r', 'l', 'd'}, runes)
 }
 
@@ -52,7 +52,7 @@ func TestReadChunks(t *testing.T) {
 	}
 
 	reader := &inputreader.InputReader{fs}
-	chunks := reader.ReadChunks(2022, 1)
+	chunks := reader.ReadChunks(2022, 1, "input.txt")
 	assert.Len(t, chunks, 2)
 	assert.Equal(t, []string{"hello world", "hello universe"}, chunks[0])
 	assert.Equal(t, []string{"hello everything"}, chunks[1])

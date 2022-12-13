@@ -10,7 +10,7 @@ import (
 	"github.com/henningstorck/advent-of-code/common/functional"
 )
 
-const filenameTemplate = "%d/day%02d/input.txt"
+const filenameTemplate = "%d/day%02d/%s"
 
 type InputReader struct {
 	FS fs.FS
@@ -20,24 +20,24 @@ func NewInputReader(dir string) *InputReader {
 	return &InputReader{os.DirFS(dir)}
 }
 
-func (reader *InputReader) ReadLines(year, day int) []string {
-	return read(reader.FS, getFilename(year, day), bufio.ScanLines)
+func (reader *InputReader) ReadLines(year, day int, filename string) []string {
+	return read(reader.FS, getFilename(year, day, filename), bufio.ScanLines)
 }
 
-func (reader *InputReader) ReadWords(year, day int) []string {
-	return read(reader.FS, getFilename(year, day), bufio.ScanWords)
+func (reader *InputReader) ReadWords(year, day int, filename string) []string {
+	return read(reader.FS, getFilename(year, day, filename), bufio.ScanWords)
 }
 
-func (reader *InputReader) ReadRunes(year, day int) []rune {
-	chars := read(reader.FS, getFilename(year, day), bufio.ScanRunes)
+func (reader *InputReader) ReadRunes(year, day int, filename string) []rune {
+	chars := read(reader.FS, getFilename(year, day, filename), bufio.ScanRunes)
 
 	return functional.Map(chars, func(char string) rune {
 		return rune(char[0])
 	})
 }
 
-func (reader *InputReader) ReadChunks(year, day int) [][]string {
-	lines := reader.ReadLines(year, day)
+func (reader *InputReader) ReadChunks(year, day int, filename string) [][]string {
+	lines := reader.ReadLines(year, day, filename)
 	chunk := []string{}
 	chunks := [][]string{}
 
@@ -55,8 +55,8 @@ func (reader *InputReader) ReadChunks(year, day int) [][]string {
 
 }
 
-func getFilename(year, day int) string {
-	return fmt.Sprintf(filenameTemplate, year, day)
+func getFilename(year, day int, filename string) string {
+	return fmt.Sprintf(filenameTemplate, year, day, filename)
 }
 
 func read(fs fs.FS, filename string, splitFunc bufio.SplitFunc) []string {

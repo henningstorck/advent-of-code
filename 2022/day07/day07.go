@@ -8,12 +8,12 @@ import (
 	"github.com/henningstorck/advent-of-code/common/inputreader"
 )
 
-func Solve(reader *inputreader.InputReader) (int, int) {
-	lines := reader.ReadLines(2022, 7)
-	return SolvePart1(lines), SolvePart2(lines)
+func Solve(reader *inputreader.InputReader, filename string) (int, int) {
+	lines := reader.ReadLines(2022, 7, filename)
+	return solvePart1(lines), solvePart2(lines)
 }
 
-func SolvePart1(lines []string) int {
+func solvePart1(lines []string) int {
 	files, dirs := getFileStats(lines)
 	dirs = calcDirSizes(files, dirs)
 	sum := 0
@@ -27,7 +27,7 @@ func SolvePart1(lines []string) int {
 	return sum
 }
 
-func SolvePart2(lines []string) int {
+func solvePart2(lines []string) int {
 	files, dirs := getFileStats(lines)
 	dirs = calcDirSizes(files, dirs)
 	totalSpace := 70000000

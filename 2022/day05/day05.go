@@ -16,13 +16,13 @@ type Instruction struct {
 	To     int
 }
 
-func Solve(reader *inputreader.InputReader) (string, string) {
-	chunks := reader.ReadChunks(2022, 5)
-	stacks, instructions := Parse(chunks)
-	return SolvePart1(stacks, instructions), SolvePart2(stacks, instructions)
+func Solve(reader *inputreader.InputReader, filename string) (string, string) {
+	chunks := reader.ReadChunks(2022, 5, filename)
+	stacks, instructions := parse(chunks)
+	return solvePart1(stacks, instructions), solvePart2(stacks, instructions)
 }
 
-func Parse(chunks [][]string) ([][]string, []Instruction) {
+func parse(chunks [][]string) ([][]string, []Instruction) {
 	piles := [][]string{}
 	instructions := []Instruction{}
 
@@ -61,7 +61,7 @@ func parseInstruction(line string) Instruction {
 	return Instruction{amount, from, to}
 }
 
-func SolvePart1(piles [][]string, instructions []Instruction) string {
+func solvePart1(piles [][]string, instructions []Instruction) string {
 	var pilesCopy [][]string
 	copier.CopyWithOption(&pilesCopy, &piles, copier.Option{DeepCopy: true})
 
@@ -82,7 +82,7 @@ func SolvePart1(piles [][]string, instructions []Instruction) string {
 	return pilesToStrings(pilesCopy)
 }
 
-func SolvePart2(piles [][]string, instructions []Instruction) string {
+func solvePart2(piles [][]string, instructions []Instruction) string {
 	var pilesCopy [][]string
 	copier.CopyWithOption(&pilesCopy, &piles, copier.Option{DeepCopy: true})
 

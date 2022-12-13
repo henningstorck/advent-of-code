@@ -17,13 +17,13 @@ type Instruction struct {
 	Distance  int
 }
 
-func Solve(reader *inputreader.InputReader) (int, int) {
-	lines := reader.ReadLines(2022, 9)
-	instructions := Parse(lines)
-	return SolvePart1(instructions), SolvePart2(instructions)
+func Solve(reader *inputreader.InputReader, filename string) (int, int) {
+	lines := reader.ReadLines(2022, 9, filename)
+	instructions := parse(lines)
+	return solvePart1(instructions), solvePart2(instructions)
 }
 
-func Parse(lines []string) []Instruction {
+func parse(lines []string) []Instruction {
 	return functional.Map(lines, func(line string) Instruction {
 		direction := line[0:1]
 		distance, _ := strconv.Atoi(line[2:])
@@ -31,11 +31,11 @@ func Parse(lines []string) []Instruction {
 	})
 }
 
-func SolvePart1(instructions []Instruction) int {
+func solvePart1(instructions []Instruction) int {
 	return countVisits(instructions, 2)
 }
 
-func SolvePart2(instructions []Instruction) int {
+func solvePart2(instructions []Instruction) int {
 	return countVisits(instructions, 10)
 }
 

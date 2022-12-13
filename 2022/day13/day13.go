@@ -8,12 +8,12 @@ import (
 	"github.com/henningstorck/advent-of-code/common/sorting"
 )
 
-func Solve(reader *inputreader.InputReader) (int, int) {
-	chunks := reader.ReadChunks(2022, 13)
-	return SolvePart1(chunks), SolvePart2(chunks)
+func Solve(reader *inputreader.InputReader, filename string) (int, int) {
+	chunks := reader.ReadChunks(2022, 13, filename)
+	return solvePart1(chunks), solvePart2(chunks)
 }
 
-func SolvePart1(chunks [][]string) int {
+func solvePart1(chunks [][]string) int {
 	indices := []int{}
 
 	for i, pair := range chunks {
@@ -30,7 +30,7 @@ func SolvePart1(chunks [][]string) int {
 	}, 0)
 }
 
-func SolvePart2(chunks [][]string) int {
+func solvePart2(chunks [][]string) int {
 	packets := functional.Reduce(chunks, func(packets []any, pair []string) []any {
 		left := unmarshalPacket(pair[0])
 		right := unmarshalPacket(pair[1])
