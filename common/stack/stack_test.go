@@ -7,38 +7,31 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestIsEmptyStack(t *testing.T) {
-	stack := stack.Stack{}
-	assert.True(t, stack.IsEmpty())
-	stack.Push("x")
-	assert.False(t, stack.IsEmpty())
-}
-
 func TestPushToStack(t *testing.T) {
-	stack := stack.Stack{}
-	stack.Push("x")
-	stack.Push("y")
-	assert.EqualValues(t, []string{"x", "y"}, stack)
+	slice := []string{}
+	slice = stack.Push(slice, "x")
+	slice = stack.Push(slice, "y")
+	assert.EqualValues(t, []string{"x", "y"}, slice)
 }
 
 func TestPrependToStack(t *testing.T) {
-	stack := stack.Stack{}
-	stack.Prepend("x")
-	stack.Prepend("y")
-	assert.EqualValues(t, []string{"y", "x"}, stack)
+	slice := []string{}
+	slice = stack.Prepend(slice, "x")
+	slice = stack.Prepend(slice, "y")
+	assert.EqualValues(t, []string{"y", "x"}, slice)
 }
 
 func TestPopFromStack(t *testing.T) {
-	stack := stack.Stack{}
-	stack.Push("x")
-	stack.Push("y")
-	value, ok := stack.Pop()
+	slice := []string{}
+	slice = stack.Push(slice, "x")
+	slice = stack.Push(slice, "y")
+	slice, value, ok := stack.Pop(slice, "")
 	assert.True(t, ok)
 	assert.Equal(t, "y", value)
-	value, ok = stack.Pop()
+	slice, value, ok = stack.Pop(slice, "")
 	assert.True(t, ok)
 	assert.Equal(t, "x", value)
-	value, ok = stack.Pop()
+	_, value, ok = stack.Pop(slice, "")
 	assert.False(t, ok)
 	assert.Equal(t, "", value)
 }

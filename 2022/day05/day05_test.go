@@ -24,9 +24,9 @@ func TestSolveParts(t *testing.T) {
 		},
 	}
 
-	stacks, instructions := day05.Parse(chunks)
-	resultPart1 := day05.SolvePart1(stacks, instructions)
-	resultPart2 := day05.SolvePart2(stacks, instructions)
+	piles, instructions := day05.Parse(chunks)
+	resultPart1 := day05.SolvePart1(piles, instructions)
+	resultPart2 := day05.SolvePart2(piles, instructions)
 	assert.Equal(t, "CMZ", resultPart1)
 	assert.Equal(t, "MCD", resultPart2)
 }

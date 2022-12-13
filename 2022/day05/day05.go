@@ -22,34 +22,34 @@ func Solve(reader *inputreader.InputReader) (string, string) {
 	return SolvePart1(stacks, instructions), SolvePart2(stacks, instructions)
 }
 
-func Parse(chunks [][]string) ([]*stack.Stack, []Instruction) {
-	stacks := []*stack.Stack{}
+func Parse(chunks [][]string) ([][]string, []Instruction) {
+	piles := [][]string{}
 	instructions := []Instruction{}
 
 	for pos := 1; pos < len(chunks[0][0]); pos += 4 {
-		stacks = append(stacks, parseStack(chunks[0], pos))
+		piles = append(piles, parsePile(chunks[0], pos))
 	}
 
 	for _, chunk := range chunks[1] {
 		instructions = append(instructions, parseInstruction(chunk))
 	}
 
-	return stacks, instructions
+	return piles, instructions
 }
 
-func parseStack(lines []string, pos int) *stack.Stack {
-	stack := &stack.Stack{}
+func parsePile(lines []string, pos int) []string {
+	pile := []string{}
 
 	for i := 0; i < len(lines)-1; i++ {
 		line := lines[i]
 		value := line[pos : pos+1]
 
 		if value != " " {
-			stack.Prepend(line[pos : pos+1])
+			pile = stack.Prepend(pile, line[pos:pos+1])
 		}
 	}
 
-	return stack
+	return pile
 }
 
 func parseInstruction(line string) Instruction {
@@ -61,51 +61,60 @@ func parseInstruction(line string) Instruction {
 	return Instruction{amount, from, to}
 }
 
-func SolvePart1(stacks []*stack.Stack, instructions []Instruction) string {
-	var stacksCopy []*stack.Stack
-	copier.CopyWithOption(&stacksCopy, &stacks, copier.Option{DeepCopy: true})
+func SolvePart1(piles [][]string, instructions []Instruction) string {
+	var pilesCopy [][]string
+	copier.CopyWithOption(&pilesCopy, &piles, copier.Option{DeepCopy: true})
 
 	for _, instruction := range instructions {
 		from := instruction.From - 1
 		to := instruction.To - 1
 
 		for i := 0; i < instruction.Amount; i++ {
-			value, _ := stacksCopy[from].Pop()
-			stacksCopy[to].Push(value)
+			pileFrom := pilesCopy[from]
+			pileFrom, value, _ := stack.Pop(pileFrom, "")
+			pilesCopy[from] = pileFrom
+			pileTo := pilesCopy[to]
+			pileTo = stack.Push(pileTo, value)
+			pilesCopy[to] = pileTo
 		}
 	}
 
-	return stacksToStrings(stacksCopy)
+	return pilesToStrings(pilesCopy)
 }
 
-func SolvePart2(stacks []*stack.Stack, instructions []Instruction) string {
-	var stacksCopy []*stack.Stack
-	copier.CopyWithOption(&stacksCopy, &stacks, copier.Option{DeepCopy: true})
+func SolvePart2(piles [][]string, instructions []Instruction) string {
+	var pilesCopy [][]string
+	copier.CopyWithOption(&pilesCopy, &piles, copier.Option{DeepCopy: true})
 
 	for _, instruction := range instructions {
-		helperStack := &stack.Stack{}
+		helperStack := []string{}
 		from := instruction.From - 1
 		to := instruction.To - 1
 
 		for i := 0; i < instruction.Amount; i++ {
-			value, _ := stacksCopy[from].Pop()
-			helperStack.Push(value)
+			pileFrom := pilesCopy[from]
+			pileFrom, value, _ := stack.Pop(pileFrom, "")
+			pilesCopy[from] = pileFrom
+			helperStack = stack.Push(helperStack, value)
 		}
 
 		for i := 0; i < instruction.Amount; i++ {
-			value, _ := helperStack.Pop()
-			stacksCopy[to].Push(value)
+			var value string
+			helperStack, value, _ = stack.Pop(helperStack, "")
+			pileTo := pilesCopy[to]
+			pileTo = stack.Push(pileTo, value)
+			pilesCopy[to] = pileTo
 		}
 	}
 
-	return stacksToStrings(stacksCopy)
+	return pilesToStrings(pilesCopy)
 }
 
-func stacksToStrings(stacks []*stack.Stack) string {
+func pilesToStrings(piles [][]string) string {
 	var buffer bytes.Buffer
 
-	for _, stack := range stacks {
-		value, _ := stack.Peek()
+	for _, pile := range piles {
+		value, _ := stack.Peek(pile, "")
 		buffer.WriteString(value)
 	}
 

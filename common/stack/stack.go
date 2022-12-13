@@ -1,36 +1,25 @@
 package stack
 
-type Stack []string
-
-func (stack *Stack) IsEmpty() bool {
-	return len(*stack) == 0
+func Push[T any](stack []T, value T) []T {
+	return append(stack, value)
 }
 
-func (stack *Stack) Push(value string) {
-	*stack = append(*stack, value)
+func Prepend[T any](stack []T, value T) []T {
+	return append([]T{value}, stack...)
 }
 
-func (stack *Stack) Prepend(value string) {
-	*stack = append([]string{value}, *stack...)
-}
-
-func (stack *Stack) Pop() (string, bool) {
-	if stack.IsEmpty() {
-		return "", false
+func Pop[T any](stack []T, defaultValue T) ([]T, T, bool) {
+	if len(stack) == 0 {
+		return stack, defaultValue, false
 	} else {
-		i := len(*stack) - 1
-		value := (*stack)[i]
-		*stack = (*stack)[:i]
-		return value, true
+		i := len(stack) - 1
+		value := (stack)[i]
+		stack = (stack)[:i]
+		return stack, value, true
 	}
 }
 
-func (stack *Stack) Peek() (string, bool) {
-	if stack.IsEmpty() {
-		return "", false
-	} else {
-		i := len(*stack) - 1
-		value := (*stack)[i]
-		return value, true
-	}
+func Peek[T any](stack []T, defaultValue T) (T, bool) {
+	_, value, ok := Pop(stack, defaultValue)
+	return value, ok
 }
