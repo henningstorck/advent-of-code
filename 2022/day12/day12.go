@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/henningstorck/advent-of-code/common/inputreader"
+	"github.com/henningstorck/advent-of-code/common/queue"
 )
 
 type Pos struct {
@@ -38,14 +39,14 @@ func SolvePart2(lines []string) int {
 }
 
 func simulate(lines []string, start Pos, canReach func(rune, rune) bool, reachedEnd func(Pos) bool) int {
-	queue := []Pos{}
+	nextToCheck := []Pos{}
 	visited := make(map[Pos]int)
-	queue = append(queue, start)
+	nextToCheck = queue.Enqueue(nextToCheck, start)
 	visited[start] = 1
 
-	for len(queue) > 0 {
-		pos := queue[0]
-		queue = queue[1:]
+	for len(nextToCheck) > 0 {
+		var pos Pos
+		nextToCheck, pos, _ = queue.Dequeue(nextToCheck, Pos{})
 
 		if reachedEnd(pos) {
 			return visited[pos] - 1
@@ -56,7 +57,7 @@ func simulate(lines []string, start Pos, canReach func(rune, rune) bool, reached
 		for _, neighbour := range neighbours {
 			if visited[neighbour] == 0 {
 				visited[neighbour] = visited[pos] + 1
-				queue = append(queue, neighbour)
+				nextToCheck = queue.Enqueue(nextToCheck, neighbour)
 			}
 		}
 	}
