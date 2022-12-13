@@ -1,7 +1,6 @@
 package day11
 
 import (
-	"fmt"
 	"sort"
 	"strconv"
 	"strings"
@@ -125,6 +124,5 @@ func getLevelOfMonkeyBusiness(monkey []*Monkey) int {
 	})
 
 	sort.Sort(sort.Reverse(sort.IntSlice(inspections)))
-	fmt.Println(inspections)
 	return inspections[0] * inspections[1]
 }
