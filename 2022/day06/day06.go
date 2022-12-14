@@ -2,6 +2,7 @@ package day06
 
 import (
 	"github.com/henningstorck/advent-of-code/common/inputreader"
+	"github.com/henningstorck/advent-of-code/common/set"
 )
 
 func Solve(reader *inputreader.InputReader, filename string) (int, int) {
@@ -19,13 +20,13 @@ func solvePart2(runes []rune) int {
 
 func findStartPos(runes []rune, distinctRunes int) int {
 	for i := distinctRunes; i < len(runes); i++ {
-		set := make(map[rune]bool)
+		uniqueRunes := set.Set[rune]{}
 
 		for j := 0; j < distinctRunes; j++ {
-			set[runes[i+j-distinctRunes]] = true
+			uniqueRunes = uniqueRunes.Add(runes[i+j-distinctRunes])
 		}
 
-		if len(set) == distinctRunes {
+		if len(uniqueRunes) == distinctRunes {
 			return i
 		}
 	}

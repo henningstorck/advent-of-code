@@ -6,10 +6,9 @@ import (
 	"github.com/henningstorck/advent-of-code/common/geometry"
 	"github.com/henningstorck/advent-of-code/common/inputreader"
 	"github.com/henningstorck/advent-of-code/common/mathutils"
+	"github.com/henningstorck/advent-of-code/common/set"
 	"github.com/henningstorck/advent-of-code/common/strutils"
 )
-
-type BlockedMap = map[geometry.Point2D]bool
 
 func Solve(reader *inputreader.InputReader, filename string) (int, int) {
 	lines := reader.ReadLines(2022, 14, filename)
@@ -17,7 +16,7 @@ func Solve(reader *inputreader.InputReader, filename string) (int, int) {
 }
 
 func solvePart1(lines []string) int {
-	blocked := make(BlockedMap)
+	blocked := set.Set[geometry.Point2D]{}
 	blocked, floor := drawRocks(lines, blocked)
 	touchedFloor := false
 	i := 0
@@ -31,11 +30,11 @@ func solvePart1(lines []string) int {
 }
 
 func solvePart2(lines []string) int {
-	blocked := make(BlockedMap)
+	blocked := set.Set[geometry.Point2D]{}
 	blocked, floor := drawRocks(lines, blocked)
 	i := 0
 
-	for !blocked[geometry.NewPoint2D(500, 0)] {
+	for !blocked.Contains(geometry.NewPoint2D(500, 0)) {
 		blocked, _ = spawnAndDrop(blocked, floor)
 		i++
 	}
@@ -43,7 +42,7 @@ func solvePart2(lines []string) int {
 	return i
 }
 
-func drawRocks(lines []string, blocked BlockedMap) (BlockedMap, int) {
+func drawRocks(lines []string, blocked set.Set[geometry.Point2D]) (set.Set[geometry.Point2D], int) {
 	floor := 0
 
 	for _, line := range lines {
@@ -63,7 +62,7 @@ func drawRocks(lines []string, blocked BlockedMap) (BlockedMap, int) {
 
 			for x := minX; x <= maxX; x++ {
 				for y := minY; y <= maxY; y++ {
-					blocked[geometry.NewPoint2D(x, y)] = true
+					blocked = blocked.Add(geometry.NewPoint2D(x, y))
 				}
 			}
 		}
@@ -72,19 +71,19 @@ func drawRocks(lines []string, blocked BlockedMap) (BlockedMap, int) {
 	return blocked, floor
 }
 
-func spawnAndDrop(blocked BlockedMap, floor int) (BlockedMap, bool) {
+func spawnAndDrop(blocked set.Set[geometry.Point2D], floor int) (set.Set[geometry.Point2D], bool) {
 	pos := geometry.NewPoint2D(500, 0)
 
 	for {
 		newPos := drop(blocked, pos)
 
 		if newPos.Y >= floor {
-			blocked[pos] = true
+			blocked = blocked.Add(pos)
 			return blocked, true
 		}
 
 		if pos == newPos {
-			blocked[pos] = true
+			blocked = blocked.Add(pos)
 			return blocked, false
 		}
 
@@ -92,7 +91,7 @@ func spawnAndDrop(blocked BlockedMap, floor int) (BlockedMap, bool) {
 	}
 }
 
-func drop(blocked BlockedMap, pos geometry.Point2D) geometry.Point2D {
+func drop(blocked set.Set[geometry.Point2D], pos geometry.Point2D) geometry.Point2D {
 	mods := []geometry.Point2D{
 		geometry.NewPoint2D(0, 1),
 		geometry.NewPoint2D(-1, 1),
@@ -102,7 +101,7 @@ func drop(blocked BlockedMap, pos geometry.Point2D) geometry.Point2D {
 	for _, mod := range mods {
 		newPos := pos.Add(mod)
 
-		if !blocked[newPos] {
+		if !blocked.Contains(newPos) {
 			return newPos
 		}
 	}

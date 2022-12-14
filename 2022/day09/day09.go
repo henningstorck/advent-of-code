@@ -6,6 +6,7 @@ import (
 	"github.com/henningstorck/advent-of-code/common/functional"
 	"github.com/henningstorck/advent-of-code/common/geometry"
 	"github.com/henningstorck/advent-of-code/common/inputreader"
+	"github.com/henningstorck/advent-of-code/common/set"
 )
 
 type Instruction struct {
@@ -37,8 +38,8 @@ func solvePart2(instructions []Instruction) int {
 
 func countVisits(instructions []Instruction, totalSegments int) int {
 	segments := make([]geometry.Point2D, totalSegments)
-	visited := make(map[geometry.Point2D]bool)
-	visited[geometry.NewPoint2D(0, 0)] = true
+	visited := set.Set[geometry.Point2D]{}
+	visited = visited.Add(geometry.NewPoint2D(0, 0))
 
 	for _, instruction := range instructions {
 		for i := 0; i < instruction.Distance; i++ {
@@ -49,7 +50,7 @@ func countVisits(instructions []Instruction, totalSegments int) int {
 					segments[j] = moveTail(segments[j-1], segments[j])
 
 					if j == len(segments)-1 {
-						visited[segments[j]] = true
+						visited = visited.Add(segments[j])
 					}
 				}
 			}
