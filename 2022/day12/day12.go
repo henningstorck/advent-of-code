@@ -35,14 +35,14 @@ func solvePart2(lines []string) int {
 }
 
 func simulate(lines []string, start geometry.Point2D, canReach func(rune, rune) bool, reachedEnd func(geometry.Point2D) bool) int {
-	nextToCheck := []geometry.Point2D{}
+	nextToCheck := queue.Queue[geometry.Point2D]{}
 	visited := make(map[geometry.Point2D]int)
-	nextToCheck = queue.Enqueue(nextToCheck, start)
+	nextToCheck = nextToCheck.Enqueue(start)
 	visited[start] = 1
 
 	for len(nextToCheck) > 0 {
 		var pos geometry.Point2D
-		nextToCheck, pos, _ = queue.Dequeue(nextToCheck, geometry.Point2D{})
+		nextToCheck, pos, _ = nextToCheck.Dequeue()
 
 		if reachedEnd(pos) {
 			return visited[pos] - 1
@@ -53,7 +53,7 @@ func simulate(lines []string, start geometry.Point2D, canReach func(rune, rune) 
 		for _, neighbour := range neighbours {
 			if visited[neighbour] == 0 {
 				visited[neighbour] = visited[pos] + 1
-				nextToCheck = queue.Enqueue(nextToCheck, neighbour)
+				nextToCheck = nextToCheck.Enqueue(neighbour)
 			}
 		}
 	}

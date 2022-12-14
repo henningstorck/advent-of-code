@@ -8,17 +8,17 @@ import (
 )
 
 func TestEnqueueDequeue(t *testing.T) {
-	slice := []string{}
-	slice = queue.Enqueue(slice, "a")
-	slice = queue.Enqueue(slice, "b")
-	assert.Equal(t, []string{"a", "b"}, slice)
-	slice, value, ok := queue.Dequeue(slice, "")
+	data := queue.Queue[string]{}
+	data = data.Enqueue("a")
+	data = data.Enqueue("b")
+	assert.EqualValues(t, []string{"a", "b"}, data)
+	data, value, ok := data.Dequeue()
 	assert.True(t, ok)
 	assert.Equal(t, "a", value)
-	slice, value, ok = queue.Dequeue(slice, "")
+	data, value, ok = data.Dequeue()
 	assert.True(t, ok)
 	assert.Equal(t, "b", value)
-	_, value, ok = queue.Dequeue(slice, "")
+	_, value, ok = data.Dequeue()
 	assert.False(t, ok)
 	assert.Equal(t, "", value)
 }

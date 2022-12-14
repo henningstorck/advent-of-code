@@ -1,11 +1,14 @@
 package queue
 
-func Enqueue[T any](queue []T, value T) []T {
+type Queue[T any] []T
+
+func (queue Queue[T]) Enqueue(value T) Queue[T] {
 	return append(queue, value)
 }
 
-func Dequeue[T any](queue []T, defaultValue T) ([]T, T, bool) {
+func (queue Queue[T]) Dequeue() (Queue[T], T, bool) {
 	if len(queue) == 0 {
+		var defaultValue T
 		return queue, defaultValue, false
 	} else {
 		value := queue[0]
