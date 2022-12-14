@@ -3,14 +3,10 @@ package day12
 import (
 	"errors"
 
+	"github.com/henningstorck/advent-of-code/common/geometry"
 	"github.com/henningstorck/advent-of-code/common/inputreader"
 	"github.com/henningstorck/advent-of-code/common/queue"
 )
-
-type Pos struct {
-	X int
-	Y int
-}
 
 func Solve(reader *inputreader.InputReader, filename string) (int, int) {
 	lines := reader.ReadLines(2022, 12, filename)
@@ -23,7 +19,7 @@ func solvePart1(lines []string) int {
 
 	return simulate(lines, start, func(oldHeight, newHeight rune) bool {
 		return oldHeight >= newHeight-1
-	}, func(pos Pos) bool {
+	}, func(pos geometry.Point2D) bool {
 		return pos == end
 	})
 }
@@ -33,20 +29,20 @@ func solvePart2(lines []string) int {
 
 	return simulate(lines, start, func(oldHeight, newHeight rune) bool {
 		return oldHeight-1 <= newHeight
-	}, func(pos Pos) bool {
+	}, func(pos geometry.Point2D) bool {
 		return getHeight(lines, pos) == 'a'
 	})
 }
 
-func simulate(lines []string, start Pos, canReach func(rune, rune) bool, reachedEnd func(Pos) bool) int {
-	nextToCheck := []Pos{}
-	visited := make(map[Pos]int)
+func simulate(lines []string, start geometry.Point2D, canReach func(rune, rune) bool, reachedEnd func(geometry.Point2D) bool) int {
+	nextToCheck := []geometry.Point2D{}
+	visited := make(map[geometry.Point2D]int)
 	nextToCheck = queue.Enqueue(nextToCheck, start)
 	visited[start] = 1
 
 	for len(nextToCheck) > 0 {
-		var pos Pos
-		nextToCheck, pos, _ = queue.Dequeue(nextToCheck, Pos{})
+		var pos geometry.Point2D
+		nextToCheck, pos, _ = queue.Dequeue(nextToCheck, geometry.Point2D{})
 
 		if reachedEnd(pos) {
 			return visited[pos] - 1
@@ -65,29 +61,29 @@ func simulate(lines []string, start Pos, canReach func(rune, rune) bool, reached
 	return 0
 }
 
-func findPosition(lines []string, marker rune) Pos {
+func findPosition(lines []string, marker rune) geometry.Point2D {
 	for y := 0; y < len(lines); y++ {
 		for x := 0; x < len(lines[0]); x++ {
 			value := rune(lines[y][x])
 
 			if marker == value {
-				return Pos{x, y}
+				return geometry.NewPoint2D(x, y)
 			}
 		}
 	}
 
-	return Pos{0, 0}
+	return geometry.NewPoint2D(0, 0)
 }
 
-func getNeighbours(lines []string, pos Pos, canReach func(rune, rune) bool) []Pos {
-	posMods := []Pos{
-		{1, 0},
-		{0, 1},
-		{-1, 0},
-		{0, -1},
+func getNeighbours(lines []string, pos geometry.Point2D, canReach func(rune, rune) bool) []geometry.Point2D {
+	posMods := []geometry.Point2D{
+		geometry.NewPoint2D(1, 0),
+		geometry.NewPoint2D(0, 1),
+		geometry.NewPoint2D(-1, 0),
+		geometry.NewPoint2D(0, -1),
 	}
 
-	neighbours := []Pos{}
+	neighbours := []geometry.Point2D{}
 
 	for _, posMod := range posMods {
 		neighbour, err := getNeighbour(lines, pos, posMod, canReach)
@@ -100,31 +96,28 @@ func getNeighbours(lines []string, pos Pos, canReach func(rune, rune) bool) []Po
 	return neighbours
 }
 
-func getNeighbour(lines []string, oldPos Pos, posMod Pos, canReach func(rune, rune) bool) (Pos, error) {
-	newPos := Pos{
-		X: oldPos.X + posMod.X,
-		Y: oldPos.Y + posMod.Y,
-	}
+func getNeighbour(lines []string, oldPos geometry.Point2D, posMod geometry.Point2D, canReach func(rune, rune) bool) (geometry.Point2D, error) {
+	newPos := oldPos.Add(posMod)
 
 	if !isWithinBounds(lines, newPos) {
-		return Pos{}, errors.New("position is out of bounds")
+		return geometry.Point2D{}, errors.New("position is out of bounds")
 	}
 
 	oldHeight := getHeight(lines, oldPos)
 	newHeight := getHeight(lines, newPos)
 
 	if !canReach(oldHeight, newHeight) {
-		return Pos{}, errors.New("position cannot be reached")
+		return geometry.Point2D{}, errors.New("position cannot be reached")
 	}
 
 	return newPos, nil
 }
 
-func isWithinBounds(lines []string, pos Pos) bool {
+func isWithinBounds(lines []string, pos geometry.Point2D) bool {
 	return pos.Y >= 0 && pos.Y < len(lines) && pos.X >= 0 && pos.X < len(lines[0])
 }
 
-func getHeight(lines []string, pos Pos) rune {
+func getHeight(lines []string, pos geometry.Point2D) rune {
 	height := rune(lines[pos.Y][pos.X])
 
 	switch height {
