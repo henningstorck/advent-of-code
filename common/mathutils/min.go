@@ -1,0 +1,17 @@
+package mathutils
+
+func Min(values ...int) int {
+	if len(values) == 0 {
+		return 0
+	}
+
+	min := values[0]
+
+	for i := 1; i < len(values); i++ {
+		if values[i] < min {
+			min = values[i]
+		}
+	}
+
+	return min
+}
