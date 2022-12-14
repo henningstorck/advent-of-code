@@ -1,15 +1,18 @@
 package stack
 
-func Push[T any](stack []T, value T) []T {
+type Stack[T any] []T
+
+func (stack Stack[T]) Push(value T) Stack[T] {
 	return append(stack, value)
 }
 
-func Prepend[T any](stack []T, value T) []T {
+func (stack Stack[T]) Prepend(value T) Stack[T] {
 	return append([]T{value}, stack...)
 }
 
-func Pop[T any](stack []T, defaultValue T) ([]T, T, bool) {
+func (stack Stack[T]) Pop() (Stack[T], T, bool) {
 	if len(stack) == 0 {
+		var defaultValue T
 		return stack, defaultValue, false
 	} else {
 		i := len(stack) - 1
@@ -19,7 +22,7 @@ func Pop[T any](stack []T, defaultValue T) ([]T, T, bool) {
 	}
 }
 
-func Peek[T any](stack []T, defaultValue T) (T, bool) {
-	_, value, ok := Pop(stack, defaultValue)
+func (stack Stack[T]) Peek() (T, bool) {
+	_, value, ok := stack.Pop()
 	return value, ok
 }

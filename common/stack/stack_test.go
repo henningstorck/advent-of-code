@@ -8,30 +8,30 @@ import (
 )
 
 func TestPushToStack(t *testing.T) {
-	slice := []string{}
-	slice = stack.Push(slice, "x")
-	slice = stack.Push(slice, "y")
-	assert.EqualValues(t, []string{"x", "y"}, slice)
+	data := stack.Stack[string]{}
+	data = data.Push("x")
+	data = data.Push("y")
+	assert.EqualValues(t, []string{"x", "y"}, data)
 }
 
 func TestPrependToStack(t *testing.T) {
-	slice := []string{}
-	slice = stack.Prepend(slice, "x")
-	slice = stack.Prepend(slice, "y")
-	assert.EqualValues(t, []string{"y", "x"}, slice)
+	data := stack.Stack[string]{}
+	data = data.Prepend("x")
+	data = data.Prepend("y")
+	assert.EqualValues(t, []string{"y", "x"}, data)
 }
 
 func TestPopFromStack(t *testing.T) {
-	slice := []string{}
-	slice = stack.Push(slice, "x")
-	slice = stack.Push(slice, "y")
-	slice, value, ok := stack.Pop(slice, "")
+	data := stack.Stack[string]{}
+	data = data.Push("x")
+	data = data.Push("y")
+	data, value, ok := data.Pop()
 	assert.True(t, ok)
 	assert.Equal(t, "y", value)
-	slice, value, ok = stack.Pop(slice, "")
+	data, value, ok = data.Pop()
 	assert.True(t, ok)
 	assert.Equal(t, "x", value)
-	_, value, ok = stack.Pop(slice, "")
+	_, value, ok = data.Pop()
 	assert.False(t, ok)
 	assert.Equal(t, "", value)
 }

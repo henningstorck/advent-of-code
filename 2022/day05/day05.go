@@ -38,14 +38,14 @@ func parse(chunks [][]string) ([][]string, []Instruction) {
 }
 
 func parsePile(lines []string, pos int) []string {
-	pile := []string{}
+	pile := stack.Stack[string]{}
 
 	for i := 0; i < len(lines)-1; i++ {
 		line := lines[i]
 		value := line[pos : pos+1]
 
 		if value != " " {
-			pile = stack.Prepend(pile, line[pos:pos+1])
+			pile = pile.Prepend(line[pos : pos+1])
 		}
 	}
 
@@ -62,7 +62,7 @@ func parseInstruction(line string) Instruction {
 }
 
 func solvePart1(piles [][]string, instructions []Instruction) string {
-	var pilesCopy [][]string
+	var pilesCopy []stack.Stack[string]
 	copier.CopyWithOption(&pilesCopy, &piles, copier.Option{DeepCopy: true})
 
 	for _, instruction := range instructions {
@@ -71,10 +71,10 @@ func solvePart1(piles [][]string, instructions []Instruction) string {
 
 		for i := 0; i < instruction.Amount; i++ {
 			pileFrom := pilesCopy[from]
-			pileFrom, value, _ := stack.Pop(pileFrom, "")
+			pileFrom, value, _ := pileFrom.Pop()
 			pilesCopy[from] = pileFrom
 			pileTo := pilesCopy[to]
-			pileTo = stack.Push(pileTo, value)
+			pileTo = pileTo.Push(value)
 			pilesCopy[to] = pileTo
 		}
 	}
@@ -83,26 +83,26 @@ func solvePart1(piles [][]string, instructions []Instruction) string {
 }
 
 func solvePart2(piles [][]string, instructions []Instruction) string {
-	var pilesCopy [][]string
+	var pilesCopy []stack.Stack[string]
 	copier.CopyWithOption(&pilesCopy, &piles, copier.Option{DeepCopy: true})
 
 	for _, instruction := range instructions {
-		helperStack := []string{}
+		helperStack := stack.Stack[string]{}
 		from := instruction.From - 1
 		to := instruction.To - 1
 
 		for i := 0; i < instruction.Amount; i++ {
 			pileFrom := pilesCopy[from]
-			pileFrom, value, _ := stack.Pop(pileFrom, "")
+			pileFrom, value, _ := pileFrom.Pop()
 			pilesCopy[from] = pileFrom
-			helperStack = stack.Push(helperStack, value)
+			helperStack = helperStack.Push(value)
 		}
 
 		for i := 0; i < instruction.Amount; i++ {
 			var value string
-			helperStack, value, _ = stack.Pop(helperStack, "")
+			helperStack, value, _ = helperStack.Pop()
 			pileTo := pilesCopy[to]
-			pileTo = stack.Push(pileTo, value)
+			pileTo = pileTo.Push(value)
 			pilesCopy[to] = pileTo
 		}
 	}
@@ -110,11 +110,11 @@ func solvePart2(piles [][]string, instructions []Instruction) string {
 	return pilesToStrings(pilesCopy)
 }
 
-func pilesToStrings(piles [][]string) string {
+func pilesToStrings(piles []stack.Stack[string]) string {
 	var buffer bytes.Buffer
 
 	for _, pile := range piles {
-		value, _ := stack.Peek(pile, "")
+		value, _ := pile.Peek()
 		buffer.WriteString(value)
 	}
 
