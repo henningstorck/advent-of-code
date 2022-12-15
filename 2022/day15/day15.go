@@ -60,13 +60,17 @@ func solvePart2(sensors []Sensor, searchSpace int) int {
 		for i := min; i <= max; i++ {
 			y := sensor.SensorPos.Y + i
 
+			if y < 0 || y > searchSpace {
+				break
+			}
+
 			xCoords := []int{
 				sensor.SensorPos.X - int(math.Abs(float64(sensor.Dist+1-i))),
 				sensor.SensorPos.X + int(math.Abs(float64(sensor.Dist+1-i))),
 			}
 
 			for _, x := range xCoords {
-				if x < 0 || x > searchSpace || y < 0 || y > searchSpace {
+				if x < 0 || x > searchSpace {
 					break
 				}
 
