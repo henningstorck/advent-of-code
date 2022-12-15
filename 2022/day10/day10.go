@@ -1,10 +1,10 @@
 package day10
 
 import (
-	"strconv"
 	"strings"
 
 	"github.com/henningstorck/advent-of-code/common/inputreader"
+	"github.com/henningstorck/advent-of-code/common/strutils"
 )
 
 func Solve(reader *inputreader.InputReader, filename string) (int, string) {
@@ -23,8 +23,7 @@ func solvePart1(lines []string) int {
 		} else if strings.HasPrefix(line, "addx ") {
 			cycle, result = calcTick(x, cycle, result)
 			cycle, result = calcTick(x, cycle, result)
-			value, _ := strconv.Atoi(line[5:])
-			x += value
+			x += strutils.Atoi(line[5:])
 		}
 	}
 
@@ -42,8 +41,7 @@ func solvePart2(lines []string) string {
 		} else if strings.HasPrefix(line, "addx ") {
 			cycle, result = drawTick(x, cycle, result)
 			cycle, result = drawTick(x, cycle, result)
-			value, _ := strconv.Atoi(line[5:])
-			x += value
+			x += strutils.Atoi(line[5:])
 		}
 	}
 

@@ -1,9 +1,8 @@
 package day08
 
 import (
-	"strconv"
-
 	"github.com/henningstorck/advent-of-code/common/inputreader"
+	"github.com/henningstorck/advent-of-code/common/strutils"
 )
 
 func Solve(reader *inputreader.InputReader, filename string) (int, int) {
@@ -88,11 +87,5 @@ func getCoverage(lines []string, x, y, xMod, yMod int) (bool, int) {
 }
 
 func getTreeAt(lines []string, x, y int) int {
-	tree, err := strconv.Atoi(string(lines[y][x]))
-
-	if err != nil {
-		return 0
-	}
-
-	return tree
+	return strutils.Atoi(string(lines[y][x]))
 }

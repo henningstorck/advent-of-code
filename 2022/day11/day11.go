@@ -2,12 +2,12 @@ package day11
 
 import (
 	"sort"
-	"strconv"
 	"strings"
 
 	"github.com/Knetic/govaluate"
 	"github.com/henningstorck/advent-of-code/common/functional"
 	"github.com/henningstorck/advent-of-code/common/inputreader"
+	"github.com/henningstorck/advent-of-code/common/strutils"
 	"github.com/jinzhu/copier"
 )
 
@@ -36,26 +36,22 @@ func parse(chunks [][]string) []*Monkey {
 			} else if strings.HasPrefix(line, "  Starting items: ") {
 				startingItemsStr := line[18:]
 				startingItemsStrSlice := strings.Split(startingItemsStr, ", ")
-				startingItems := functional.Map(startingItemsStrSlice, func(valueStr string) int {
-					value, _ := strconv.Atoi(valueStr)
-					return value
+				startingItems := functional.Map(startingItemsStrSlice, func(value string) int {
+					return strutils.Atoi(value)
 				})
 				monkey.Items = startingItems
 			} else if strings.HasPrefix(line, "  Operation: new = ") {
 				operation := line[19:]
 				monkey.Operation = operation
 			} else if strings.HasPrefix(line, "  Test: divisible by ") {
-				divisibleByStr := line[21:]
-				divisibleBy, _ := strconv.Atoi(divisibleByStr)
-				monkey.DivisibleBy = divisibleBy
+				divisibleBy := line[21:]
+				monkey.DivisibleBy = strutils.Atoi(divisibleBy)
 			} else if strings.HasPrefix(line, "    If true: throw to monkey ") {
-				ifTrueStr := line[29:]
-				ifTrue, _ := strconv.Atoi(ifTrueStr)
-				monkey.IfTrue = ifTrue
+				ifTrue := line[29:]
+				monkey.IfTrue = strutils.Atoi(ifTrue)
 			} else if strings.HasPrefix(line, "    If false: throw to monkey ") {
-				ifFalseStr := line[30:]
-				ifFalse, _ := strconv.Atoi(ifFalseStr)
-				monkey.IfFalse = ifFalse
+				ifFalse := line[30:]
+				monkey.IfFalse = strutils.Atoi(ifFalse)
 			}
 		}
 

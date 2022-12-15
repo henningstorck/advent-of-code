@@ -2,10 +2,10 @@ package day01
 
 import (
 	"sort"
-	"strconv"
 
 	"github.com/henningstorck/advent-of-code/common/functional"
 	"github.com/henningstorck/advent-of-code/common/inputreader"
+	"github.com/henningstorck/advent-of-code/common/strutils"
 )
 
 func Solve(reader *inputreader.InputReader, filename string) (int, int) {
@@ -16,9 +16,8 @@ func Solve(reader *inputreader.InputReader, filename string) (int, int) {
 
 func parse(chunks [][]string) []int {
 	return functional.Map(chunks, func(chunk []string) int {
-		return functional.Reduce(chunk, func(calories int, snackStr string) int {
-			snack, _ := strconv.Atoi(snackStr)
-			return calories + snack
+		return functional.Reduce(chunk, func(calories int, snack string) int {
+			return calories + strutils.Atoi(snack)
 		}, 0)
 	})
 }
