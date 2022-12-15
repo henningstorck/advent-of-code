@@ -19,3 +19,10 @@ func TestPoint2DAddXY(t *testing.T) {
 	result := point.AddXY(-3, 5)
 	assert.Equal(t, geometry.Point2D{-1, 11}, result)
 }
+
+func TestGetManhattenDistance(t *testing.T) {
+	point1 := geometry.Point2D{2, 6}
+	point2 := geometry.Point2D{-3, 5}
+	result := point1.GetManhattenDistance(point2)
+	assert.Equal(t, 6, result)
+}
