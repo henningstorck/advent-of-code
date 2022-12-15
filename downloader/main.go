@@ -119,22 +119,30 @@ func writeFile(filename string, body io.Reader) error {
 }
 
 func bootstrap(day, year int) error {
-	err := copyTemplate(day, year, "downloader/dayxx/dayxx.go", fmt.Sprintf("%d/day%02d/day%02d.go", year, day, day))
-
-	if err != nil {
-		return err
+	filesToCopy := []struct {
+		from string
+		to   string
+	}{
+		{
+			"downloader/dayxx/dayxx.go",
+			fmt.Sprintf("%d/day%02d/day%02d.go", year, day, day),
+		},
+		{
+			"downloader/dayxx/dayxx_test.go",
+			fmt.Sprintf("%d/day%02d/day%02d_test.go", year, day, day),
+		},
+		{
+			"downloader/dayxx/example.txt",
+			fmt.Sprintf("%d/day%02d/example.txt", year, day),
+		},
 	}
 
-	err = copyTemplate(day, year, "downloader/dayxx/dayxx_test.go", fmt.Sprintf("%d/day%02d/day%02d_test.go", year, day, day))
+	for _, fileToCopy := range filesToCopy {
+		err := copyTemplate(day, year, fileToCopy.from, fileToCopy.to)
 
-	if err != nil {
-		return err
-	}
-
-	err = copyTemplate(day, year, "downloader/dayxx/example.txt", fmt.Sprintf("%d/day%02d/example.txt", year, day))
-
-	if err != nil {
-		return err
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
